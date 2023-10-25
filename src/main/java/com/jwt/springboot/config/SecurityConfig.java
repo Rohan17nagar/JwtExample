@@ -37,26 +37,29 @@ public class SecurityConfig {
 
 		http.csrf(csrf -> csrf.disable()).cors(cors -> cors.disable())
 				.authorizeHttpRequests(auth -> auth.requestMatchers("/home/**").hasAnyAuthority(Role.ADMIN.name())
-						.requestMatchers("/auth/login").permitAll().requestMatchers("/auth/create-user").permitAll()
-						.anyRequest().authenticated())
+				.requestMatchers("/customer/**").permitAll()
+				.requestMatchers("/auth/login").permitAll()
+				.requestMatchers("/account/**").permitAll()
+				.requestMatchers("/auth/create-user").permitAll().anyRequest().authenticated())
 				.exceptionHandling(ex -> ex.authenticationEntryPoint(point))
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 		http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
 		return http.build();
 	}
 
-	
-	//OLD USEFULL code::
-	
-	//	http.csrf(csrf -> csrf.disable()).cors(cors -> cors.disable())
-	//	.authorizeHttpRequests(auth -> auth.requestMatchers("/home/**").authenticated()
-	//			.requestMatchers("/auth/login").permitAll().requestMatchers("/auth/create-user").permitAll()
-	//			.anyRequest().authenticated())
-	//	.exceptionHandling(ex -> ex.authenticationEntryPoint(point))
-	//	.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+	// OLD USEFULL code::
+
+	// http.csrf(csrf -> csrf.disable()).cors(cors -> cors.disable())
+	// .authorizeHttpRequests(auth ->
+	// auth.requestMatchers("/home/**").authenticated()
+	// .requestMatchers("/auth/login").permitAll().requestMatchers("/auth/create-user").permitAll()
+	// .anyRequest().authenticated())
+	// .exceptionHandling(ex -> ex.authenticationEntryPoint(point))
+	// .sessionManagement(session ->
+	// session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 	//
-	//http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
-	//return http.build();
+	// http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
+	// return http.build();
 
 	@Bean
 	public DaoAuthenticationProvider daoAuthenticationProvider() {
